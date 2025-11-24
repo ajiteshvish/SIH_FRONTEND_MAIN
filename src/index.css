@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* Dark futuristic theme with neon accents */
+    --background: 220 25% 10%;
+    --foreground: 210 40% 98%;
+
+    --card: 220 20% 15%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 220 20% 15%;
+    --popover-foreground: 210 40% 98%;
+
+    /* Cyan primary for tech vibe */
+    --primary: 190 95% 50%;
+    --primary-foreground: 220 25% 10%;
+
+    --secondary: 220 20% 20%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 220 15% 25%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 220 20% 20%;
+    --accent-foreground: 210 40% 98%;
+
+    /* Traffic light colors */
+    --traffic-green: 145 80% 50%;
+    --traffic-amber: 40 95% 55%;
+    --traffic-red: 0 85% 60%;
+
+    --destructive: 0 85% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 220 20% 25%;
+    --input: 220 20% 20%;
+    --ring: 190 95% 50%;
+
+    --radius: 0.75rem;
+
+    /* Gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(220 25% 10%), hsl(220 30% 15%));
+    --gradient-primary: linear-gradient(135deg, hsl(190 95% 50%), hsl(200 90% 60%));
+    --gradient-card: linear-gradient(135deg, hsl(220 20% 15%), hsl(220 25% 18%));
+    
+    /* Shadows and glows */
+    --glow-primary: 0 0 30px hsl(190 95% 50% / 0.3);
+    --glow-green: 0 0 20px hsl(145 80% 50% / 0.4);
+    --glow-amber: 0 0 20px hsl(40 95% 55% / 0.4);
+    --glow-red: 0 0 20px hsl(0 85% 60% / 0.4);
+    
+    /* Transitions */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
