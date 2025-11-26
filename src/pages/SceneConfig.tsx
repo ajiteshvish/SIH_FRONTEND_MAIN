@@ -16,31 +16,6 @@ import { FolderOpen, Layers, Building2, Wrench, FileText, Sparkles, Upload } fro
 
 // Scene configuration data structure
 const sceneData = {
-  "Root Level Files": [
-    "BigTownCarsBldgs_HDMap",
-    "BigTownClosed_HDMap",
-    "BigTown_HDMap",
-    "BuildingsScene",
-    "CurvedTown_HDMap",
-    "DemoStaticMap",
-    "IndianTown_HDMap",
-    "IndiaRealisticRoads",
-    "LongRoadBuildings",
-    "LongRoadTrees",
-    "LongRoad_6Lane_CenterMark",
-    "LongRoad_EnvObjects",
-    "LongRoad_Town",
-    "MCP_Demo_Map",
-    "MCP_Everything_Map",
-    "MegaTown_HDMap",
-    "RealBigTown_HDMap",
-    "RealTownHD",
-    "SingleBuilding",
-    "Town14Roads",
-    "Town8Roads",
-    "TownRealisticRoads",
-    "Town_HDMap",
-  ],
   Assemblies: [
     "ElectricPoles01",
     "ElectricPoles02",
@@ -227,26 +202,84 @@ const sceneData = {
     "BottDot01",
     "BottDot02",
   ],
+  "Props - Trees": [
+    "Ash01", "Azalea01", "Beech01", "Birch01", "Bush_Lg01", "Bush_Med01", "Bush_Med02", "Bush_Med03", "Bush_Med04", "Bush_Med05",
+    "Bush_Sm01", "Bush_Sm02", "Bush_Sm03", "Bush_Sm04", "Bush_Sm05", "Bush_Sm06", "CalPalm_Full_Lg01", "CalPalm_Full_Lg02",
+    "CalPalm_Full_Lg03", "CalPalm_Full_Lg_Curve01", "CalPalm_Full_Med01", "CalPalm_Full_Sm01", "CalPalm_Half_Lg01", "CalPalm_Half_Lg02",
+    "CalPalm_Half_Lg03", "CalPalm_Half_Med01", "CalPalm_Half_Med_Curve01", "CalPalm_Half_Sm01", "CalPalm_Half_Sm02", "CalPalm_Trim_Lg01",
+    "CalPalm_Trim_Lg02", "CalPalm_Trim_Lg03", "CalPalm_Trim_Med01", "CalPalm_Trim_Med02", "CalPalm_Trim_Med_Curve01", "CalPalm_Trim_Med_Curve02",
+    "CalPalm_Trim_Sm_Curve01", "Camphor01", "CoulPine_Lg01", "CoulPine_Lg02", "CoulPine_Lg03", "CoulPine_Lg04", "CoulPine_Med01",
+    "CoulPine_Med02", "CoulPine_Med03", "CoulPine_Med04", "CoulPine_Med05", "CoulPine_Med06", "CoulPine_Sm01", "CoulPine_Sm02",
+    "CoulPine_Sm03", "CoulPine_Sm04", "CoulPine_Sm05", "CoulPine_Sm06", "Cypress_Lg01", "Cypress_Med01", "Cypress_Sm01", "Elm01",
+    "Eucalyptus_Lg01", "Eucalyptus_Lg02", "Eucalyptus_Lg03", "Eucalyptus_Lg04", "Eucalyptus_Lg05", "Eucalyptus_Med01", "Eucalyptus_Med02",
+    "Eucalyptus_Med03", "Eucalyptus_Med04", "Eucalyptus_Sm01", "Eucalyptus_Sm02", "Eucalyptus_Sm03", "Eucalyptus_Sm04", "Gingko01",
+    "GingkoFall", "Hydrangea01", "Maple01", "TridentMaple", "Yoshino_Cherry_Blooming", "Yoshino_Cherry_Leaves", "Zelkova01"
+  ],
+  "Road Styles": [
+    "CountryRoad", "Freeway", "FreewayOneWay", "Highway", "HighwayPassing", "MainStreetCenterTurn", "MainStreetCenterTurnBike",
+    "MainStreetMedian", "MainStreetMedianBike", "OneWay", "Ramp", "Residential", "ResidentialMarked", "Simple"
+  ],
+  "Scene Templates": [
+    "3 Way Median", "3 Way Stop", "3 Way Through Stop", "4 Way Permitted", "4 Way Protected", "4 Way Roundabout 1", "4 Way Roundabout 2",
+    "4 Way Roundabout 3", "4 Way Stop", "4 Way Yield", "90deg Turn 20m", "Bridge Crossing", "Freeway Bridge", "Freeway Interchange",
+    "Freeway Offramps 1", "Straight 40m"
+  ],
+  "Scene Templates - Germany": [
+    "3 Way Median", "3 Way Stop", "3 Way Through Stop", "4 Way Permitted", "4 Way Protected", "4 Way Roundabout 1", "4 Way Roundabout 2",
+    "4 Way Roundabout 3", "4 Way Stop", "4 Way Yield", "90deg Turn 20m", "Bridge Crossing", "Freeway Bridge", "Freeway Interchange",
+    "Freeway Offramps 1", "Straight 40m"
+  ],
+  "Scene Templates - Parking Lot": [
+    "InnerParking_01", "InnerParking_02", "InnerParking_03", "SideCorner_01", "SideCorner_02", "SideExit_01", "SideExit_02",
+    "SideExit_03", "SideParking_01", "SideParking_02", "SideParking_03", "TrafficIsland"
+  ],
+  "Scene Templates - UK": [
+    "3 Way Stop", "3 Way Through Stop", "4 Way Permitted", "4 Way Protected", "4 Way Roundabout 1", "4 Way Roundabout 2",
+    "4 Way Roundabout 3", "4 Way Stop", "4 Way Yield", "90deg Turn 20m", "Bridge Crossing", "Freeway Bridge", "Freeway Interchange",
+    "Freeway Offramps 1", "Straight 40m", "Three Way Median"
+  ],
+  "Signs - UK": [
+    "Sign_322.1A", "Sign_400yds", "Sign_501", "Sign_504.1_01", "Sign_504.1_02", "Sign_504.1_03", "Sign_670V20", "Sign_670V30",
+    "Sign_670V40", "Sign_670V50", "Sign_670V60", "Sign_670V70", "Sign_AverageSpeedCheck", "Sign_BikeLaneStart", "Sign_BusLane",
+    "Sign_BusStop", "Sign_DisabledParking", "Sign_End", "Sign_KeepClear", "Sign_NoStopping-164", "Sign_Roundabout", "Sign_STOP"
+  ],
+  "Stencils": [
+    "Stencil_10_Stretched", "Stencil_15_Stretched", "Stencil_20_Stretched", "Stencil_25_Stretched", "Stencil_30_Stretched",
+    "Stencil_AHEAD", "Stencil_ArrowType1Long", "Stencil_ArrowType1Medium", "Stencil_ArrowType1Short", "Stencil_Bicycle1",
+    "Stencil_BIKE", "Stencil_BUS", "Stencil_Disabled", "Stencil_PedCrossing", "Stencil_STOP", "Stencil_Yield"
+  ],
+  "Stencils - UK": [
+    "Stencil_AheadOnly", "Stencil_Bike", "Stencil_BusLane", "Stencil_BusOnly", "Stencil_BusStop", "Stencil_GiveWay",
+    "Stencil_KeepClear", "Stencil_LeftOnly", "Stencil_RightOnly", "Stencil_SchoolKeepClear", "Stencil_Slow",
+    "Stencil_SpeedLimit_30", "Stencil_SpeedLimit_40", "Stencil_Stop", "Stencil_TurnLeft", "Stencil_TurnRight"
+  ],
+  "Vehicles": [
+    "Ambulance", "Backhoe", "CementTruck", "CompactCar", "DeliveryVan", "GarbageTruck", "PickupTruck", "SchoolBus",
+    "Sedan", "SemiTruck", "SemiTruck_Trailer01", "SemiTruck_Trailer02", "SemiTruck_Trailer03", "SemiTruck_Trailer04",
+    "Suv", "UtilityTruck"
+  ],
 };
 
 export const SceneConfig = () => {
   const navigate = useNavigate();
   const [projectPath, setProjectPath] = useState("");
   const [selectedItems, setSelectedItems] = useState<Record<string, string>>({});
-  const [rootLevelFile, setRootLevelFile] = useState<File | null>(null);
   const [sceneDescription, setSceneDescription] = useState("");
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const folderInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setRootLevelFile(file);
-      setSelectedItems((prev) => ({ ...prev, "Root Level Files": file.name }));
+  const handleFolderSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      // Get the path from the first file
+      const firstFile = files[0];
+      const path = firstFile.webkitRelativePath || firstFile.name;
+      const folderPath = path.split('/')[0];
+      setProjectPath(folderPath);
     }
   };
 
-  const handleBrowseClick = () => {
-    fileInputRef.current?.click();
+  const handleBrowseFolderClick = () => {
+    folderInputRef.current?.click();
   };
 
   const handleSubmit = () => {
@@ -295,20 +328,40 @@ export const SceneConfig = () => {
                 <div className="flex-1 space-y-3">
                   <div>
                     <Label htmlFor="projectPath" className="text-lg font-bold text-foreground">
-                      Your RoadRunner Project Path
+                      Your RoadRunner Project Folder
                     </Label>
                     <p className="text-sm text-muted-foreground mt-1">
-                      Specify the location of your RoadRunner project files
+                      Browse and select your RoadRunner project folder
                     </p>
                   </div>
-                  <Input
-                    id="projectPath"
-                    type="text"
-                    placeholder="e.g., C:/Projects/RoadRunner/MyProject"
-                    value={projectPath}
-                    onChange={(e) => setProjectPath(e.target.value)}
-                    className="w-full h-12 text-base bg-background/80 border-border/50 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
-                  />
+                  <div className="relative">
+                    <input
+                      ref={folderInputRef}
+                      type="file"
+                      onChange={handleFolderSelect}
+                      className="hidden"
+                      {...({ webkitdirectory: "", directory: "" } as any)}
+                      multiple
+                    />
+                    <div className="flex gap-2">
+                      <Input
+                        value={projectPath}
+                        placeholder="No folder selected"
+                        readOnly
+                        className="flex-1 h-12 text-base bg-background/60 border-border/50 cursor-pointer"
+                        onClick={handleBrowseFolderClick}
+                      />
+                      <Button
+                        type="button"
+                        onClick={handleBrowseFolderClick}
+                        variant="outline"
+                        className="h-12 px-6 border-border/50 hover:border-primary/50 hover:bg-primary/10 transition-all"
+                      >
+                        <FolderOpen className="w-4 h-4 mr-2" />
+                        Browse
+                      </Button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -316,49 +369,8 @@ export const SceneConfig = () => {
             {/* Scene Elements Grid */}
             <div className="p-8">
               <div className="grid md:grid-cols-2 gap-6">
-                {/* Root Level Files - File Browser */}
-                <div className="group space-y-3 p-5 rounded-xl bg-gradient-to-br from-muted/30 to-muted/10 border border-border/30 hover:border-primary/30 hover:shadow-lg transition-all duration-300">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all">
-                      <Layers className="w-5 h-5" />
-                    </div>
-                    <Label className="text-base font-semibold text-foreground cursor-pointer">
-                      Root Level Files
-                    </Label>
-                  </div>
-                  <div className="relative">
-                    <input
-                      ref={fileInputRef}
-                      type="file"
-                      onChange={handleFileSelect}
-                      className="hidden"
-                      accept="*"
-                    />
-                    <div className="flex gap-2">
-                      <Input
-                        value={rootLevelFile?.name || ""}
-                        placeholder="No file selected"
-                        readOnly
-                        className="flex-1 h-11 bg-background/60 border-border/50 cursor-pointer"
-                        onClick={handleBrowseClick}
-                      />
-                      <Button
-                        type="button"
-                        onClick={handleBrowseClick}
-                        variant="outline"
-                        className="h-11 px-4 border-border/50 hover:border-primary/50 hover:bg-primary/10 transition-all"
-                      >
-                        <Upload className="w-4 h-4 mr-2" />
-                        Browse
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Other Categories - Dropdowns */}
-                {Object.entries(sceneData)
-                  .filter(([category]) => category !== "Root Level Files")
-                  .map(([category, items]) => (
+                {/* All Categories - Dropdowns */}
+                {Object.entries(sceneData).map(([category, items]) => (
                     <div 
                       key={category} 
                       className="group space-y-3 p-5 rounded-xl bg-gradient-to-br from-muted/30 to-muted/10 border border-border/30 hover:border-primary/30 hover:shadow-lg transition-all duration-300"
