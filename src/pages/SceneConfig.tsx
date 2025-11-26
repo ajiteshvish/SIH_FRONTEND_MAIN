@@ -267,17 +267,15 @@ export const SceneConfig = () => {
   const [sceneDescription, setSceneDescription] = useState("");
 
   const handleSubmit = () => {
-    if (!sceneDescription.trim()) {
+    if (!projectPath.trim() || !sceneDescription.trim()) {
       return;
     }
 
     // Build a comprehensive message with all selected data (no markdown)
     let fullMessage = "";
 
-    // Add project path if provided
-    if (projectPath) {
-      fullMessage += `RoadRunner Project Path: ${projectPath}\n\n`;
-    }
+    // Add project path (required)
+    fullMessage += `RoadRunner Project Path: ${projectPath}\n\n`;
 
     // Add selected scene elements
     const selectedCategories = Object.entries(selectedItems).filter(([_, value]) => value);
@@ -333,10 +331,10 @@ export const SceneConfig = () => {
                 <div className="flex-1 space-y-3">
                   <div>
                     <Label htmlFor="projectPath" className="text-lg font-bold text-foreground">
-                      Your RoadRunner Project Path
+                      Your RoadRunner Project Path <span className="text-destructive">*</span>
                     </Label>
                     <p className="text-sm text-muted-foreground mt-1">
-                      Enter the full path to your RoadRunner project folder
+                      Enter the full path to your RoadRunner project folder (required)
                     </p>
                   </div>
                   <Input
@@ -344,6 +342,7 @@ export const SceneConfig = () => {
                     value={projectPath}
                     onChange={(e) => setProjectPath(e.target.value)}
                     placeholder="e.g., C:/Users/YourName/Documents/RoadRunner/MyProject"
+                    required
                     className="w-full h-12 text-base bg-background/80 border-border/50 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                   />
                 </div>
@@ -419,7 +418,7 @@ export const SceneConfig = () => {
               <div className="flex justify-center mt-8">
                 <Button
                   onClick={handleSubmit}
-                  disabled={!sceneDescription.trim()}
+                  disabled={!projectPath.trim() || !sceneDescription.trim()}
                   size="lg"
                   className="bg-gradient-primary hover:shadow-glow-primary transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 px-12 py-6 text-lg font-semibold rounded-xl"
                 >
