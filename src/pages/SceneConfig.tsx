@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -12,7 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Navbar } from "@/components/Navbar";
-import { FolderOpen, Layers, Building2, Wrench, FileText, Sparkles } from "lucide-react";
+import { FolderOpen, Layers, Building2, Wrench, FileText, Sparkles, Upload } from "lucide-react";
 
 // Scene configuration data structure
 const sceneData = {
@@ -233,7 +233,21 @@ export const SceneConfig = () => {
   const navigate = useNavigate();
   const [projectPath, setProjectPath] = useState("");
   const [selectedItems, setSelectedItems] = useState<Record<string, string>>({});
+  const [rootLevelFile, setRootLevelFile] = useState<File | null>(null);
   const [sceneDescription, setSceneDescription] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setRootLevelFile(file);
+      setSelectedItems((prev) => ({ ...prev, "Root Level Files": file.name }));
+    }
+  };
+
+  const handleBrowseClick = () => {
+    fileInputRef.current?.click();
+  };
 
   const handleSubmit = () => {
     if (!sceneDescription.trim()) {
@@ -302,41 +316,83 @@ export const SceneConfig = () => {
             {/* Scene Elements Grid */}
             <div className="p-8">
               <div className="grid md:grid-cols-2 gap-6">
-                {Object.entries(sceneData).map(([category, items]) => (
-                  <div 
-                    key={category} 
-                    className="group space-y-3 p-5 rounded-xl bg-gradient-to-br from-muted/30 to-muted/10 border border-border/30 hover:border-primary/30 hover:shadow-lg transition-all duration-300"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all">
-                        {getCategoryIcon(category)}
-                      </div>
-                      <Label htmlFor={category} className="text-base font-semibold text-foreground cursor-pointer">
-                        {category}
-                      </Label>
+                {/* Root Level Files - File Browser */}
+                <div className="group space-y-3 p-5 rounded-xl bg-gradient-to-br from-muted/30 to-muted/10 border border-border/30 hover:border-primary/30 hover:shadow-lg transition-all duration-300">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all">
+                      <Layers className="w-5 h-5" />
                     </div>
-                    <Select
-                      value={selectedItems[category] || ""}
-                      onValueChange={(value) =>
-                        setSelectedItems((prev) => ({ ...prev, [category]: value }))
-                      }
-                    >
-                      <SelectTrigger 
-                        id={category} 
-                        className="w-full h-11 bg-background/60 border-border/50 hover:border-primary/50 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
-                      >
-                        <SelectValue placeholder={`Select ${category.toLowerCase()}...`} />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {items.map((item) => (
-                          <SelectItem key={item} value={item}>
-                            {item}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <Label className="text-base font-semibold text-foreground cursor-pointer">
+                      Root Level Files
+                    </Label>
                   </div>
-                ))}
+                  <div className="relative">
+                    <input
+                      ref={fileInputRef}
+                      type="file"
+                      onChange={handleFileSelect}
+                      className="hidden"
+                      accept="*"
+                    />
+                    <div className="flex gap-2">
+                      <Input
+                        value={rootLevelFile?.name || ""}
+                        placeholder="No file selected"
+                        readOnly
+                        className="flex-1 h-11 bg-background/60 border-border/50 cursor-pointer"
+                        onClick={handleBrowseClick}
+                      />
+                      <Button
+                        type="button"
+                        onClick={handleBrowseClick}
+                        variant="outline"
+                        className="h-11 px-4 border-border/50 hover:border-primary/50 hover:bg-primary/10 transition-all"
+                      >
+                        <Upload className="w-4 h-4 mr-2" />
+                        Browse
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Other Categories - Dropdowns */}
+                {Object.entries(sceneData)
+                  .filter(([category]) => category !== "Root Level Files")
+                  .map(([category, items]) => (
+                    <div 
+                      key={category} 
+                      className="group space-y-3 p-5 rounded-xl bg-gradient-to-br from-muted/30 to-muted/10 border border-border/30 hover:border-primary/30 hover:shadow-lg transition-all duration-300"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all">
+                          {getCategoryIcon(category)}
+                        </div>
+                        <Label htmlFor={category} className="text-base font-semibold text-foreground cursor-pointer">
+                          {category}
+                        </Label>
+                      </div>
+                      <Select
+                        value={selectedItems[category] || ""}
+                        onValueChange={(value) =>
+                          setSelectedItems((prev) => ({ ...prev, [category]: value }))
+                        }
+                      >
+                        <SelectTrigger 
+                          id={category} 
+                          className="w-full h-11 bg-background/60 border-border/50 hover:border-primary/50 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                        >
+                          <SelectValue placeholder={`Select ${category.toLowerCase()}...`} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {items.map((item) => (
+                            <SelectItem key={item} value={item}>
+                              {item}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  ))}
               </div>
 
               {/* Scene Description */}
