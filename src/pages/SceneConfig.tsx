@@ -287,8 +287,29 @@ export const SceneConfig = () => {
       return;
     }
 
-    // Navigate to chat with the description pre-filled
-    navigate("/chat", { state: { initialMessage: sceneDescription } });
+    // Build a comprehensive message with all selected data
+    let fullMessage = "";
+
+    // Add project path if provided
+    if (projectPath) {
+      fullMessage += `**RoadRunner Project Path:** ${projectPath}\n\n`;
+    }
+
+    // Add selected scene elements
+    const selectedCategories = Object.entries(selectedItems).filter(([_, value]) => value);
+    if (selectedCategories.length > 0) {
+      fullMessage += "**Selected Scene Elements:**\n";
+      selectedCategories.forEach(([category, item]) => {
+        fullMessage += `- **${category}:** ${item}\n`;
+      });
+      fullMessage += "\n";
+    }
+
+    // Add scene description
+    fullMessage += `**Scene Description:**\n${sceneDescription}`;
+
+    // Navigate to chat with the complete configuration
+    navigate("/chat", { state: { initialMessage: fullMessage } });
   };
 
   const getCategoryIcon = (category: string) => {
