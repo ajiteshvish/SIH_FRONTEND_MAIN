@@ -3,14 +3,27 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Bot, Send, Sparkles } from "lucide-react";
 
+type ChatMessage = {
+  role: "user" | "assistant";
+  content: string;
+};
+
 export const ChatInterface = () => {
   const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState([
+  const [messages, setMessages] = useState<ChatMessage[]>([
     {
       role: "assistant",
-      content: "Hi! I'm the IndiTwin AI Assistant. Describe your traffic scenario, and I'll help you create a simulation. For example, you can tell me about peak hour congestion, road closures, or new signal timing you'd like to test.",
+      content:
+        "Hi! I'm the IndiTwin AI Assistant. Describe your traffic scenario, and I'll help you create a simulation. For example, you can tell me about peak hour congestion, road closures, or new signal timing you'd like to test.",
     },
   ]);
+  const [loading, setLoading] = useState(false);
+
+  // 🧠 Ek hi session ke liye stable threadId – isse LangGraph memory handle karega
+  const [threadId] = useState(
+    () => (crypto as any).randomUUID?.() ?? String(Date.now())
+  );
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -21,22 +34,55 @@ export const ChatInterface = () => {
     scrollToBottom();
   }, [messages]);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!message.trim()) return;
 
-    setMessages([...messages, { role: "user", content: message }]);
-    setMessage("");
+    const userMessage: ChatMessage = { role: "user", content: message };
 
-    // Simulate bot response
-    setTimeout(() => {
+    // Show user message immediately
+    setMessages((prev) => [...prev, userMessage]);
+    const toSend = message; // local copy
+    setMessage("");
+    setLoading(true);
+
+    try {
+      const res = await fetch("http://localhost:8000/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        // 👇 Ab thread_id bhi bhej rahe hain
+        body: JSON.stringify({
+          message: toSend,
+          thread_id: threadId,
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error(`Server error: ${res.status}`);
+      }
+
+      const data: { reply: string } = await res.json();
+
+      const botMessage: ChatMessage = {
+        role: "assistant",
+        content: data.reply,
+      };
+
+      setMessages((prev) => [...prev, botMessage]);
+    } catch (error) {
+      console.error(error);
       setMessages((prev) => [
         ...prev,
         {
           role: "assistant",
-          content: "I understand your scenario. Let me create a simulation based on that. What specific metrics would you like to track? (e.g., average wait time, congestion levels, throughput)",
+          content:
+            "Oops, I had trouble contacting the IndiTwin server. Please try again.",
         },
       ]);
-    }, 1000);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -80,7 +126,9 @@ export const ChatInterface = () => {
                   >
                     <div className="flex items-start gap-3">
                       <Sparkles className="w-4 h-4 text-primary mt-0.5 group-hover:scale-110 transition-transform" />
-                      <span className="text-sm text-foreground">{suggestion}</span>
+                      <span className="text-sm text-foreground">
+                        {suggestion}
+                      </span>
                     </div>
                   </button>
                 ))}
@@ -108,16 +156,30 @@ export const ChatInterface = () => {
                     : "bg-muted text-foreground"
                 }`}
               >
-                <p className="text-[15px] leading-relaxed whitespace-pre-wrap">{msg.content}</p>
+                <p className="text-[15px] leading-relaxed whitespace-pre-wrap">
+                  {msg.content}
+                </p>
               </div>
 
               {msg.role === "user" && (
                 <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center flex-shrink-0">
-                  <span className="text-sm font-medium">You</span>
+                  <span className="text-sm font-medium">Y</span>
                 </div>
               )}
             </div>
           ))}
+
+          {loading && (
+            <div className="flex justify-start gap-4 animate-slide-up">
+              <div className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center flex-shrink-0 shadow-glow-primary">
+                <Bot className="w-5 h-5 text-primary-foreground" />
+              </div>
+              <div className="max-w-[80%] rounded-2xl px-5 py-3 bg-muted text-foreground">
+                <p className="text-[15px] leading-relaxed">Thinking…</p>
+              </div>
+            </div>
+          )}
+
           <div ref={messagesEndRef} />
         </div>
 
@@ -135,7 +197,7 @@ export const ChatInterface = () => {
               />
               <Button
                 onClick={handleSend}
-                disabled={!message.trim()}
+                disabled={!message.trim() || loading}
                 size="icon"
                 className="absolute right-2 bottom-2 h-9 w-9 rounded-xl bg-gradient-primary hover:shadow-glow-primary disabled:opacity-50 disabled:cursor-not-allowed transition-all"
               >
