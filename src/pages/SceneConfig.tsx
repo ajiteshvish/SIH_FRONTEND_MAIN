@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -11,6 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Navbar } from "@/components/Navbar";
+import { FolderOpen, Layers, Building2, Wrench, FileText, Sparkles } from "lucide-react";
 
 // Scene configuration data structure
 const sceneData = {
@@ -229,6 +231,7 @@ const sceneData = {
 
 export const SceneConfig = () => {
   const navigate = useNavigate();
+  const [projectPath, setProjectPath] = useState("");
   const [selectedItems, setSelectedItems] = useState<Record<string, string>>({});
   const [sceneDescription, setSceneDescription] = useState("");
 
@@ -241,69 +244,137 @@ export const SceneConfig = () => {
     navigate("/chat", { state: { initialMessage: sceneDescription } });
   };
 
+  const getCategoryIcon = (category: string) => {
+    if (category.includes("Root")) return <Layers className="w-5 h-5" />;
+    if (category.includes("Building")) return <Building2 className="w-5 h-5" />;
+    if (category.includes("Props")) return <Wrench className="w-5 h-5" />;
+    return <FileText className="w-5 h-5" />;
+  };
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
       <Navbar activeTab="Scene Config" onTabChange={() => {}} showChatTab={false} />
       
       <main className="pt-24 pb-16 px-4 sm:px-8 md:px-16 lg:px-24">
-        <div className="max-w-4xl mx-auto">
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold mb-3 bg-gradient-primary bg-clip-text text-transparent">
+        <div className="max-w-5xl mx-auto">
+          {/* Header Section */}
+          <div className="mb-12 text-center animate-fade-in">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-primary shadow-glow-primary mb-6">
+              <Sparkles className="w-8 h-8 text-primary-foreground" />
+            </div>
+            <h1 className="text-5xl font-bold mb-4 bg-gradient-primary bg-clip-text text-transparent">
               Configure Your Scene
             </h1>
-            <p className="text-muted-foreground">
-              Select scene elements and describe your traffic simulation scenario
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Build your perfect traffic simulation by selecting scene elements and describing your scenario
             </p>
           </div>
 
-          <div className="space-y-6 bg-card border border-border rounded-2xl p-6 shadow-lg">
-            {Object.entries(sceneData).map(([category, items]) => (
-              <div key={category} className="space-y-2">
-                <Label htmlFor={category} className="text-base font-semibold">
-                  {category}
-                </Label>
-                <Select
-                  value={selectedItems[category] || ""}
-                  onValueChange={(value) =>
-                    setSelectedItems((prev) => ({ ...prev, [category]: value }))
-                  }
-                >
-                  <SelectTrigger id={category} className="w-full">
-                    <SelectValue placeholder={`Select ${category.toLowerCase()}...`} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {items.map((item) => (
-                      <SelectItem key={item} value={item}>
-                        {item}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+          {/* Main Form Card */}
+          <div className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-3xl shadow-2xl overflow-hidden animate-slide-up">
+            {/* Project Path Section - Highlighted */}
+            <div className="bg-gradient-to-r from-primary/10 via-primary/5 to-transparent p-8 border-b border-border/50">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-primary flex items-center justify-center flex-shrink-0 shadow-glow-primary">
+                  <FolderOpen className="w-6 h-6 text-primary-foreground" />
+                </div>
+                <div className="flex-1 space-y-3">
+                  <div>
+                    <Label htmlFor="projectPath" className="text-lg font-bold text-foreground">
+                      Your RoadRunner Project Path
+                    </Label>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      Specify the location of your RoadRunner project files
+                    </p>
+                  </div>
+                  <Input
+                    id="projectPath"
+                    type="text"
+                    placeholder="e.g., C:/Projects/RoadRunner/MyProject"
+                    value={projectPath}
+                    onChange={(e) => setProjectPath(e.target.value)}
+                    className="w-full h-12 text-base bg-background/80 border-border/50 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                  />
+                </div>
               </div>
-            ))}
-
-            <div className="space-y-2 pt-4">
-              <Label htmlFor="description" className="text-base font-semibold">
-                Describe Your Scene
-              </Label>
-              <Textarea
-                id="description"
-                placeholder="Describe your traffic scenario in detail... For example: 'Create a busy intersection with heavy traffic during rush hour, including buses and pedestrians crossing.'"
-                value={sceneDescription}
-                onChange={(e) => setSceneDescription(e.target.value)}
-                className="min-h-[150px] resize-none"
-              />
             </div>
 
-            <div className="flex justify-end pt-4">
-              <Button
-                onClick={handleSubmit}
-                disabled={!sceneDescription.trim()}
-                size="lg"
-                className="bg-gradient-primary hover:shadow-glow-primary transition-all duration-300 hover:scale-105"
-              >
-                Submit & Continue to Chat
-              </Button>
+            {/* Scene Elements Grid */}
+            <div className="p-8">
+              <div className="grid md:grid-cols-2 gap-6">
+                {Object.entries(sceneData).map(([category, items]) => (
+                  <div 
+                    key={category} 
+                    className="group space-y-3 p-5 rounded-xl bg-gradient-to-br from-muted/30 to-muted/10 border border-border/30 hover:border-primary/30 hover:shadow-lg transition-all duration-300"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all">
+                        {getCategoryIcon(category)}
+                      </div>
+                      <Label htmlFor={category} className="text-base font-semibold text-foreground cursor-pointer">
+                        {category}
+                      </Label>
+                    </div>
+                    <Select
+                      value={selectedItems[category] || ""}
+                      onValueChange={(value) =>
+                        setSelectedItems((prev) => ({ ...prev, [category]: value }))
+                      }
+                    >
+                      <SelectTrigger 
+                        id={category} 
+                        className="w-full h-11 bg-background/60 border-border/50 hover:border-primary/50 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                      >
+                        <SelectValue placeholder={`Select ${category.toLowerCase()}...`} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {items.map((item) => (
+                          <SelectItem key={item} value={item}>
+                            {item}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                ))}
+              </div>
+
+              {/* Scene Description */}
+              <div className="mt-8 p-6 rounded-xl bg-gradient-to-br from-primary/5 to-transparent border border-primary/20">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-10 h-10 rounded-lg bg-gradient-primary flex items-center justify-center shadow-glow-primary">
+                    <Sparkles className="w-5 h-5 text-primary-foreground" />
+                  </div>
+                  <div>
+                    <Label htmlFor="description" className="text-lg font-bold text-foreground">
+                      Describe Your Scene
+                    </Label>
+                    <p className="text-sm text-muted-foreground">
+                      Paint a picture of your traffic simulation scenario
+                    </p>
+                  </div>
+                </div>
+                <Textarea
+                  id="description"
+                  placeholder="Describe your traffic scenario in detail... For example: 'Create a busy intersection with heavy traffic during rush hour, including buses and pedestrians crossing.'"
+                  value={sceneDescription}
+                  onChange={(e) => setSceneDescription(e.target.value)}
+                  className="min-h-[160px] resize-none bg-background/80 border-border/50 focus:border-primary focus:ring-2 focus:ring-primary/20 text-base leading-relaxed transition-all"
+                />
+              </div>
+
+              {/* Submit Button */}
+              <div className="flex justify-center mt-8">
+                <Button
+                  onClick={handleSubmit}
+                  disabled={!sceneDescription.trim()}
+                  size="lg"
+                  className="bg-gradient-primary hover:shadow-glow-primary transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 px-12 py-6 text-lg font-semibold rounded-xl"
+                >
+                  <Sparkles className="w-5 h-5 mr-2" />
+                  Submit & Continue to Chat
+                </Button>
+              </div>
             </div>
           </div>
         </div>

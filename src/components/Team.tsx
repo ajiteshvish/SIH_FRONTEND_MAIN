@@ -103,27 +103,7 @@ export const Team = () => {
           ))}
         </div>
 
-        {/* Call to Action */}
-        <Card className="mt-12 sm:mt-16 p-6 sm:p-8 bg-gradient-card border-primary/30 text-center animate-slide-up" style={{ animationDelay: "0.4s" }}>
-          <h3 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">Join Our Mission</h3>
-          <p className="text-sm sm:text-base text-muted-foreground mb-4 sm:mb-6 max-w-2xl mx-auto px-2">
-            We're always looking for talented individuals passionate about smart cities and traffic innovation
-          </p>
-          <div className="flex flex-wrap justify-center gap-2 sm:gap-4">
-            <div className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-primary/10 text-primary text-xs sm:text-sm">
-              Traffic Engineering
-            </div>
-            <div className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-traffic-green/10 text-traffic-green text-xs sm:text-sm">
-              Machine Learning
-            </div>
-            <div className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-traffic-amber/10 text-traffic-amber text-xs sm:text-sm">
-              Data Science
-            </div>
-            <div className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-primary/10 text-primary text-xs sm:text-sm">
-              Full Stack Development
-            </div>
-          </div>
-        </Card>
+
       </div>
     </section>
   );
