@@ -86,3 +86,15 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
   }
 }
+
+/* Hide Spline watermark/logo */
+#logo,
+[id*="logo"],
+[class*="logo"],
+[class*="watermark"],
+[class*="spline-watermark"] {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}

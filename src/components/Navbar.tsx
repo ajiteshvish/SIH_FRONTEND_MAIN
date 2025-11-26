@@ -1,6 +1,7 @@
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { useNavigate, useLocation } from "react-router-dom";
 
 interface NavbarProps {
   activeTab: string;
@@ -10,9 +11,27 @@ interface NavbarProps {
 
 export const Navbar = ({ activeTab, onTabChange, showChatTab }: NavbarProps) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const baseTabs = ["Home", "Solution", "Team"];
   const tabs = showChatTab ? [...baseTabs, "Chat"] : baseTabs;
+
+  const handleTabClick = (tab: string) => {
+    if (location.pathname === "/scene-config" || location.pathname === "/chat") {
+      // If on scene-config or chat page, navigate back to home
+      if (tab === "Home") {
+        navigate("/");
+      } else if (tab === "Chat") {
+        navigate("/chat");
+      } else {
+        navigate("/");
+        setTimeout(() => onTabChange(tab), 100);
+      }
+    } else {
+      onTabChange(tab);
+    }
+  };
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 ${
@@ -34,7 +53,7 @@ export const Navbar = ({ activeTab, onTabChange, showChatTab }: NavbarProps) => 
             {tabs.map((tab) => (
               <button
                 key={tab}
-                onClick={() => onTabChange(tab)}
+                onClick={() => handleTabClick(tab)}
                 className={`relative px-4 py-2 text-sm font-medium transition-colors ${
                   activeTab === tab
                     ? "text-primary"
@@ -73,7 +92,7 @@ export const Navbar = ({ activeTab, onTabChange, showChatTab }: NavbarProps) => 
               <button
                 key={tab}
                 onClick={() => {
-                  onTabChange(tab);
+                  handleTabClick(tab);
                   setMobileMenuOpen(false);
                 }}
                 className={`block w-full text-left px-4 py-2 rounded-lg transition-colors ${
