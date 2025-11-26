@@ -12,7 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Navbar } from "@/components/Navbar";
-import { FolderOpen, Layers, Building2, Wrench, FileText, Sparkles, Upload } from "lucide-react";
+import { FolderOpen, Layers, Building2, Wrench, FileText, Sparkles } from "lucide-react";
 
 // Scene configuration data structure
 const sceneData = {
@@ -265,48 +265,32 @@ export const SceneConfig = () => {
   const [projectPath, setProjectPath] = useState("");
   const [selectedItems, setSelectedItems] = useState<Record<string, string>>({});
   const [sceneDescription, setSceneDescription] = useState("");
-  const folderInputRef = useRef<HTMLInputElement>(null);
-
-  const handleFolderSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files && files.length > 0) {
-      // Get the path from the first file
-      const firstFile = files[0];
-      const path = firstFile.webkitRelativePath || firstFile.name;
-      const folderPath = path.split('/')[0];
-      setProjectPath(folderPath);
-    }
-  };
-
-  const handleBrowseFolderClick = () => {
-    folderInputRef.current?.click();
-  };
 
   const handleSubmit = () => {
     if (!sceneDescription.trim()) {
       return;
     }
 
-    // Build a comprehensive message with all selected data
+    // Build a comprehensive message with all selected data (no markdown)
     let fullMessage = "";
 
     // Add project path if provided
     if (projectPath) {
-      fullMessage += `**RoadRunner Project Path:** ${projectPath}\n\n`;
+      fullMessage += `RoadRunner Project Path: ${projectPath}\n\n`;
     }
 
     // Add selected scene elements
     const selectedCategories = Object.entries(selectedItems).filter(([_, value]) => value);
     if (selectedCategories.length > 0) {
-      fullMessage += "**Selected Scene Elements:**\n";
+      fullMessage += "Selected Scene Elements:\n";
       selectedCategories.forEach(([category, item]) => {
-        fullMessage += `- **${category}:** ${item}\n`;
+        fullMessage += `${category}: ${item}\n`;
       });
       fullMessage += "\n";
     }
 
     // Add scene description
-    fullMessage += `**Scene Description:**\n${sceneDescription}`;
+    fullMessage += `Scene Description:\n${sceneDescription}`;
 
     // Navigate to chat with the complete configuration
     navigate("/chat", { state: { initialMessage: fullMessage } });
@@ -349,40 +333,19 @@ export const SceneConfig = () => {
                 <div className="flex-1 space-y-3">
                   <div>
                     <Label htmlFor="projectPath" className="text-lg font-bold text-foreground">
-                      Your RoadRunner Project Folder
+                      Your RoadRunner Project Path
                     </Label>
                     <p className="text-sm text-muted-foreground mt-1">
-                      Browse and select your RoadRunner project folder
+                      Enter the full path to your RoadRunner project folder
                     </p>
                   </div>
-                  <div className="relative">
-                    <input
-                      ref={folderInputRef}
-                      type="file"
-                      onChange={handleFolderSelect}
-                      className="hidden"
-                      {...({ webkitdirectory: "", directory: "" } as any)}
-                      multiple
-                    />
-                    <div className="flex gap-2">
-                      <Input
-                        value={projectPath}
-                        placeholder="No folder selected"
-                        readOnly
-                        className="flex-1 h-12 text-base bg-background/60 border-border/50 cursor-pointer"
-                        onClick={handleBrowseFolderClick}
-                      />
-                      <Button
-                        type="button"
-                        onClick={handleBrowseFolderClick}
-                        variant="outline"
-                        className="h-12 px-6 border-border/50 hover:border-primary/50 hover:bg-primary/10 transition-all"
-                      >
-                        <FolderOpen className="w-4 h-4 mr-2" />
-                        Browse
-                      </Button>
-                    </div>
-                  </div>
+                  <Input
+                    id="projectPath"
+                    value={projectPath}
+                    onChange={(e) => setProjectPath(e.target.value)}
+                    placeholder="e.g., C:/Users/YourName/Documents/RoadRunner/MyProject"
+                    className="w-full h-12 text-base bg-background/80 border-border/50 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                  />
                 </div>
               </div>
             </div>
