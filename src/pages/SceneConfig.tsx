@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -324,7 +324,86 @@ export const SceneConfig = () => {
 
           {/* Main Form Card */}
           <div className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-3xl shadow-2xl overflow-hidden animate-slide-up">
-            {/* Project Path Section - Highlighted */}
+            {/* Guidelines Section - FIRST THING USER SEES */}
+            <div className="p-8 border-b border-border/50">
+              <div className="p-6 rounded-xl bg-gradient-to-br from-muted/30 to-muted/10 border border-border/50">
+                <div className="flex items-start gap-3 mb-4">
+                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                    <BookOpen className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-foreground mb-2">RoadRunner Usage Guidelines</h3>
+                    <p className="text-sm text-muted-foreground mb-4">Please read the following guidelines before proceeding:</p>
+                  </div>
+                </div>
+
+                <div className="space-y-4 text-sm text-foreground bg-background/50 p-5 rounded-lg border border-border/30 max-h-96 overflow-y-auto">
+                  <div>
+                    <h4 className="font-semibold text-base mb-2">1. Check Licence</h4>
+                    <p className="text-muted-foreground">When RoadRunner starts, it first checks whether you have a valid licence. The system will show Yes/No indicating whether the licence is available.</p>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-base mb-2">2. RoadRunner Start Screen</h4>
+                    <p className="text-muted-foreground mb-2">After the licence check, RoadRunner shows two main options:</p>
+                    
+                    <div className="ml-4 space-y-3">
+                      <div>
+                        <p className="font-medium">A. Create New Project</p>
+                        <ul className="list-disc ml-6 text-muted-foreground space-y-1 mt-1">
+                          <li>Enter Project Name: Type the name of the new project</li>
+                          <li>Select Save Path: Browse and choose the folder where you want to store the project</li>
+                          <li>Select Assets Type: Choose between Base or Base + Add-On</li>
+                          <li>Click "Create": The new project will be generated</li>
+                        </ul>
+                      </div>
+
+                      <div>
+                        <p className="font-medium">B. Open Existing Project</p>
+                        <ul className="list-disc ml-6 text-muted-foreground space-y-1 mt-1">
+                          <li>Click on "Open Project"</li>
+                          <li>Browse and select the project folder of an existing RoadRunner project</li>
+                          <li>The project will open in the editor</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-base mb-2">3. Get Started Form</h4>
+                    <p className="text-muted-foreground mb-2">When you click "Get Started", fill the form step by step:</p>
+                    <ul className="list-disc ml-6 text-muted-foreground space-y-1">
+                      <li>Select RoadRunner Project Path (mandatory): Browse and choose your RoadRunner project folder</li>
+                      <li>Select Assets: Choose the assets you want the scene to use (Base or Base + Add-On)</li>
+                      <li>Describe the Scene: Provide a detailed description of what you want to build</li>
+                      <li>Click "Submit": All details will be sent to the chatbot</li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h4 className="font-semibold text-base mb-2">4. Build Scene in RoadRunner</h4>
+                    <p className="text-muted-foreground">After submitting the form, RoadRunner will open automatically. The system will use the provided details to build or modify the scene inside the selected project. The scene will then load inside RoadRunner for further editing.</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-3 mt-6 p-4 rounded-lg bg-primary/5 border border-primary/20">
+                  <Checkbox 
+                    id="guidelines" 
+                    checked={guidelinesAccepted}
+                    onCheckedChange={(checked) => setGuidelinesAccepted(checked as boolean)}
+                    className="border-primary data-[state=checked]:bg-primary"
+                  />
+                  <Label 
+                    htmlFor="guidelines" 
+                    className="text-sm font-medium cursor-pointer select-none"
+                  >
+                    I have read and understood the RoadRunner usage guidelines
+                  </Label>
+                </div>
+              </div>
+            </div>
+
+            {/* Project Path Section - After Guidelines */}
             <div className="bg-gradient-to-r from-primary/10 via-primary/5 to-transparent p-8 border-b border-border/50">
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 rounded-xl bg-gradient-primary flex items-center justify-center flex-shrink-0 shadow-glow-primary">
@@ -414,83 +493,6 @@ export const SceneConfig = () => {
                   onChange={(e) => setSceneDescription(e.target.value)}
                   className="min-h-[160px] resize-none bg-background/80 border-border/50 focus:border-primary focus:ring-2 focus:ring-primary/20 text-base leading-relaxed transition-all"
                 />
-              </div>
-
-              {/* Guidelines Section */}
-              <div className="mt-8 p-6 rounded-xl bg-gradient-to-br from-muted/30 to-muted/10 border border-border/50">
-                <div className="flex items-start gap-3 mb-4">
-                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <BookOpen className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-bold text-foreground mb-2">RoadRunner Usage Guidelines</h3>
-                    <p className="text-sm text-muted-foreground mb-4">Please read the following guidelines before proceeding:</p>
-                  </div>
-                </div>
-
-                <div className="space-y-4 text-sm text-foreground bg-background/50 p-5 rounded-lg border border-border/30 max-h-96 overflow-y-auto">
-                  <div>
-                    <h4 className="font-semibold text-base mb-2">1. Check Licence</h4>
-                    <p className="text-muted-foreground">When RoadRunner starts, it first checks whether you have a valid licence. The system will show Yes/No indicating whether the licence is available.</p>
-                  </div>
-
-                  <div>
-                    <h4 className="font-semibold text-base mb-2">2. RoadRunner Start Screen</h4>
-                    <p className="text-muted-foreground mb-2">After the licence check, RoadRunner shows two main options:</p>
-                    
-                    <div className="ml-4 space-y-3">
-                      <div>
-                        <p className="font-medium">A. Create New Project</p>
-                        <ul className="list-disc ml-6 text-muted-foreground space-y-1 mt-1">
-                          <li>Enter Project Name: Type the name of the new project</li>
-                          <li>Select Save Path: Browse and choose the folder where you want to store the project</li>
-                          <li>Select Assets Type: Choose between Base or Base + Add-On</li>
-                          <li>Click "Create": The new project will be generated</li>
-                        </ul>
-                      </div>
-
-                      <div>
-                        <p className="font-medium">B. Open Existing Project</p>
-                        <ul className="list-disc ml-6 text-muted-foreground space-y-1 mt-1">
-                          <li>Click on "Open Project"</li>
-                          <li>Browse and select the project folder of an existing RoadRunner project</li>
-                          <li>The project will open in the editor</li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <h4 className="font-semibold text-base mb-2">3. Get Started Form</h4>
-                    <p className="text-muted-foreground mb-2">When you click "Get Started", fill the form step by step:</p>
-                    <ul className="list-disc ml-6 text-muted-foreground space-y-1">
-                      <li>Select RoadRunner Project Path (mandatory): Browse and choose your RoadRunner project folder</li>
-                      <li>Select Assets: Choose the assets you want the scene to use (Base or Base + Add-On)</li>
-                      <li>Describe the Scene: Provide a detailed description of what you want to build</li>
-                      <li>Click "Submit": All details will be sent to the chatbot</li>
-                    </ul>
-                  </div>
-
-                  <div>
-                    <h4 className="font-semibold text-base mb-2">4. Build Scene in RoadRunner</h4>
-                    <p className="text-muted-foreground">After submitting the form, RoadRunner will open automatically. The system will use the provided details to build or modify the scene inside the selected project. The scene will then load inside RoadRunner for further editing.</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3 mt-6 p-4 rounded-lg bg-primary/5 border border-primary/20">
-                  <Checkbox 
-                    id="guidelines" 
-                    checked={guidelinesAccepted}
-                    onCheckedChange={(checked) => setGuidelinesAccepted(checked as boolean)}
-                    className="border-primary data-[state=checked]:bg-primary"
-                  />
-                  <Label 
-                    htmlFor="guidelines" 
-                    className="text-sm font-medium cursor-pointer select-none"
-                  >
-                    I have read and understood the RoadRunner usage guidelines
-                  </Label>
-                </div>
               </div>
 
               {/* Submit Button */}

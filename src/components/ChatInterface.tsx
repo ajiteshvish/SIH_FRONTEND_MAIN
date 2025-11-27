@@ -93,11 +93,22 @@ export const ChatInterface = () => {
     }
   };
 
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setMessage(e.target.value);
+    // Reset height to recalculate
+    const textarea = e.target;
+    textarea.style.height = '56px';
+    const newHeight = Math.min(textarea.scrollHeight, 200);
+    textarea.style.height = newHeight + 'px';
+  };
+
   return (
     <section className="min-h-screen flex flex-col bg-background">
       <div className="flex-1 overflow-hidden flex flex-col max-w-4xl mx-auto w-full">
         {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto px-4 py-8 space-y-6">
+        <div className="flex-1 overflow-y-auto px-4 py-8 space-y-6 scroll-smooth scrollbar-thin scrollbar-thumb-muted-foreground/20 scrollbar-track-transparent hover:scrollbar-thumb-muted-foreground/40">
           {messages.length === 1 && (
             <div className="text-center space-y-8 py-12 animate-fade-in">
               <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-primary shadow-glow-primary">
@@ -161,30 +172,37 @@ export const ChatInterface = () => {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Input Area */}
-        <div className="border-t border-border bg-background/95 backdrop-blur-sm">
-          <div className="px-4 py-6">
-            <div className="relative max-w-3xl mx-auto">
-              <Textarea
-                placeholder="Describe your traffic scenario..."
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                onKeyDown={handleKeyPress}
-                className="min-h-[60px] max-h-[200px] pr-12 resize-none rounded-2xl border-border bg-muted focus:border-primary focus:ring-1 focus:ring-primary text-[15px] leading-relaxed"
-                rows={1}
-              />
-              <Button
-                onClick={handleSend}
-                disabled={!message.trim() || loading}
-                size="icon"
-                className="absolute right-2 bottom-2 h-9 w-9 rounded-xl bg-gradient-primary hover:shadow-glow-primary disabled:opacity-50 disabled:cursor-not-allowed transition-all"
-              >
-                <Send className="w-4 h-4" />
-              </Button>
+        {/* Input Area - Enhanced ChatGPT Style with Upward Growth */}
+        <div className="border-t border-border bg-background">
+          <div className="px-4 pt-4 pb-6">
+            <div className="relative max-w-4xl mx-auto flex flex-col items-end">
+              <div className="w-full flex items-end gap-2 p-2 rounded-3xl border-2 border-border bg-background shadow-lg hover:border-primary/50 focus-within:border-primary transition-all">
+                <Textarea
+                  ref={textareaRef}
+                  placeholder="Message IndiTwin..."
+                  value={message}
+                  onChange={handleTextareaChange}
+                  onKeyDown={handleKeyPress}
+                  className="flex-1 min-h-[56px] max-h-[200px] px-4 py-3 resize-none border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 text-base leading-relaxed placeholder:text-muted-foreground/60 scrollbar-thin scrollbar-thumb-muted scrollbar-track-transparent overflow-y-auto"
+                  rows={1}
+                  style={{
+                    height: '56px',
+                    verticalAlign: 'bottom'
+                  }}
+                />
+                <Button
+                  onClick={handleSend}
+                  disabled={!message.trim() || loading}
+                  size="icon"
+                  className="h-10 w-10 rounded-xl bg-gradient-primary hover:shadow-glow-primary disabled:opacity-40 disabled:cursor-not-allowed transition-all flex-shrink-0 mb-1"
+                >
+                  <Send className="w-5 h-5" />
+                </Button>
+              </div>
+              <p className="text-center text-xs text-muted-foreground mt-3 w-full">
+                IndiTwin can make mistakes. Verify critical information.
+              </p>
             </div>
-            <p className="text-center text-xs text-muted-foreground mt-3">
-              IndiTwin can make mistakes. Verify critical information.
-            </p>
           </div>
         </div>
       </div>
