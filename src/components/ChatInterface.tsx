@@ -15,7 +15,7 @@ export const ChatInterface = () => {
     {
       role: "assistant",
       content:
-        "Hi! I'm the IndiTwin AI Assistant. Describe your traffic scenario, and I'll help you create a simulation. For example, you can tell me about peak hour congestion, road closures, or new signal timing you'd like to test.",
+        "Hi! I'm the **IndiTwin AI Assistant**. Describe your traffic scenario, and I'll help you create a simulation.\n\n## What I can help with:\n\n1. Peak hour congestion analysis\n2. Road closures simulation\n3. Signal timing optimization\n\nYou can also use `markdown formatting` in your messages!\n\n---\n\nTry asking me something like:\n- *Simulate rush hour traffic*\n- **Test new signal timing**",
     },
   ]);
   const [loading, setLoading] = useState(false);
@@ -134,15 +134,9 @@ export const ChatInterface = () => {
                     : "bg-muted text-foreground"
                 }`}
               >
-                {msg.role === "assistant" ? (
-                  <div className="text-[15px] leading-relaxed prose prose-sm dark:prose-invert max-w-none">
-                    <ReactMarkdown>{msg.content}</ReactMarkdown>
-                  </div>
-                ) : (
-                  <p className="text-[15px] leading-relaxed whitespace-pre-wrap">
-                    {msg.content}
-                  </p>
-                )}
+                <div className={`text-[15px] leading-relaxed ${msg.role === "assistant" ? "prose prose-sm prose-invert max-w-none prose-headings:text-foreground prose-headings:font-bold prose-h1:text-xl prose-h2:text-lg prose-h3:text-base prose-p:my-2 prose-p:text-foreground prose-ul:my-2 prose-ol:my-2 prose-li:my-1 prose-li:text-foreground prose-code:bg-primary/20 prose-code:text-primary prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-pre:bg-primary/10 prose-pre:p-3 prose-pre:rounded-lg prose-strong:font-bold prose-strong:text-foreground prose-em:italic prose-em:text-foreground prose-a:text-primary prose-a:underline prose-hr:border-border" : "prose prose-sm prose-invert max-w-none prose-headings:text-primary-foreground prose-headings:font-bold prose-p:my-1 prose-p:text-primary-foreground prose-strong:font-bold prose-strong:text-primary-foreground prose-em:italic prose-em:text-primary-foreground prose-code:bg-primary-foreground/20 prose-code:text-primary-foreground prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-li:text-primary-foreground"}`}>
+                  <ReactMarkdown>{msg.content}</ReactMarkdown>
+                </div>
               </div>
 
               {msg.role === "user" && (

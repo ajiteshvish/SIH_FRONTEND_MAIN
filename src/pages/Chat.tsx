@@ -2,8 +2,9 @@ import { useLocation } from "react-router-dom";
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Bot, Send, Sparkles } from "lucide-react";
+import { Bot, Send } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
+import ReactMarkdown from "react-markdown";
 
 type ChatMessage = {
   role: "user" | "assistant";
@@ -19,7 +20,7 @@ export const Chat = () => {
     {
       role: "assistant",
       content:
-        "Hi! I'm the IndiTwin AI Assistant. Describe your traffic scenario, and I'll help you create a simulation. For example, you can tell me about peak hour congestion, road closures, or new signal timing you'd like to test.",
+        "Hi! I'm the **IndiTwin AI Assistant**. Describe your traffic scenario, and I'll help you create a simulation.\n\n## What I can help with:\n\n1. Peak hour congestion analysis\n2. Road closures simulation\n3. Signal timing optimization\n\nYou can also use `markdown formatting` in your messages!\n\n---\n\nTry asking me something like:\n- *Simulate rush hour traffic*\n- **Test new signal timing**",
     },
   ]);
   const [loading, setLoading] = useState(false);
@@ -129,29 +130,6 @@ export const Chat = () => {
                     Your intelligent companion for traffic simulation and analysis
                   </p>
                 </div>
-
-                {/* Suggestion Pills */}
-                <div className="grid md:grid-cols-2 gap-3 max-w-2xl mx-auto pt-8">
-                  {[
-                    "Simulate rush hour traffic on Main Street",
-                    "Test new signal timing at intersection 5",
-                    "Analyze impact of lane closure on Route 66",
-                    "Predict congestion for upcoming event",
-                  ].map((suggestion, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setMessage(suggestion)}
-                      className="p-4 text-left rounded-xl border border-border bg-card hover:bg-muted hover:border-primary/40 transition-all group"
-                    >
-                      <div className="flex items-start gap-3">
-                        <Sparkles className="w-4 h-4 text-primary mt-0.5 group-hover:scale-110 transition-transform" />
-                        <span className="text-sm text-foreground">
-                          {suggestion}
-                        </span>
-                      </div>
-                    </button>
-                  ))}
-                </div>
               </div>
             )}
 
@@ -175,9 +153,9 @@ export const Chat = () => {
                       : "bg-muted text-foreground"
                   }`}
                 >
-                  <p className="text-[15px] leading-relaxed whitespace-pre-wrap">
-                    {msg.content}
-                  </p>
+                  <div className={`text-[15px] leading-relaxed ${msg.role === "assistant" ? "prose prose-sm prose-invert max-w-none prose-headings:text-foreground prose-headings:font-bold prose-h1:text-xl prose-h2:text-lg prose-h3:text-base prose-p:my-2 prose-p:text-foreground prose-ul:my-2 prose-ol:my-2 prose-li:my-1 prose-li:text-foreground prose-code:bg-primary/20 prose-code:text-primary prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-pre:bg-primary/10 prose-pre:p-3 prose-pre:rounded-lg prose-strong:font-bold prose-strong:text-foreground prose-em:italic prose-em:text-foreground prose-a:text-primary prose-a:underline prose-hr:border-border" : "prose prose-sm prose-invert max-w-none prose-headings:text-primary-foreground prose-headings:font-bold prose-p:my-1 prose-p:text-primary-foreground prose-strong:font-bold prose-strong:text-primary-foreground prose-em:italic prose-em:text-primary-foreground prose-code:bg-primary-foreground/20 prose-code:text-primary-foreground prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-li:text-primary-foreground"}`}>
+                    <ReactMarkdown>{msg.content}</ReactMarkdown>
+                  </div>
                 </div>
 
                 {msg.role === "user" && (
@@ -210,7 +188,7 @@ export const Chat = () => {
                   placeholder="Describe your traffic scenario..."
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  onKeyPress={handleKeyPress}
+                  onKeyDown={handleKeyPress}
                   className="min-h-[60px] max-h-[200px] pr-12 resize-none rounded-2xl border-border bg-muted focus:border-primary focus:ring-1 focus:ring-primary text-[15px] leading-relaxed"
                   rows={1}
                 />

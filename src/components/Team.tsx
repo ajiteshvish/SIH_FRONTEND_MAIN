@@ -1,102 +1,88 @@
 import { Card } from "@/components/ui/card";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Brain, Code, Route, Users } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export const Team = () => {
   const teamMembers = [
     {
       name: "Ajitesh Vishwakarma",
-      role: "Traffic Systems Engineer",
-      description: "Specializes in urban mobility modeling and intelligent transportation systems",
+      role: "Full-Stack Web & WebGL Developer",
       initials: "AV",
       color: "bg-primary/10 text-primary",
-      icon: Route,
+      image: "/team/Ajitesh_Vishwakarma.jpeg",
     },
     {
       name: "Priyanshu Khare",
-      role: "AI & Simulation Lead",
-      description: "Builds AI models for real-time traffic prediction and optimization",
+      role: "AI & Backend Developer",
       initials: "PK",
       color: "bg-traffic-green/10 text-traffic-green",
-      icon: Brain,
+      image: "/team/Priyanshu_Khare.jpeg",
     },
     {
       name: "Anurag Jaiswal",
-      role: "Product Manager",
-      description: "Drives product vision and ensures IndiTwin meets city planner needs",
+      role: "AI & Product Manager",
       initials: "AJ",
       color: "bg-traffic-amber/10 text-traffic-amber",
-      icon: Users,
+      image: "/team/Anurag_Jaiswal.jpeg",
     },
     {
       name: "Bilal Ahmed",
-      role: "Frontend Developer",
-      description: "Creates intuitive interfaces for complex traffic data visualization",
+      role: "ML Engineer",
       initials: "BA",
       color: "bg-primary/10 text-primary",
-      icon: Code,
+      image: "/team/Bilal_Ahmed.jpeg",
     },
     {
       name: "Samaksh Mandil",
       role: "Backend Developer",
-      description: "Develops robust APIs and manages data infrastructure",
       initials: "SM",
       color: "bg-traffic-green/10 text-traffic-green",
-      icon: Code,
+      image: "/team/Samaksh_Mandil.jpeg",
     },
     {
       name: "Aana Pandey",
-      role: "UX Designer",
-      description: "Designs user-centered experiences for traffic management systems",
+      role: "Frontend Developer",
       initials: "AP",
       color: "bg-traffic-amber/10 text-traffic-amber",
-      icon: Users,
+      image: "/team/Aana_Pandey.jpeg",
     },
   ];
 
   return (
-    <section className="min-h-screen py-20 px-4">
-      <div className="container mx-auto max-w-6xl">
+    <section className="min-h-screen py-24 px-6">
+      <div className="container mx-auto max-w-7xl">
         {/* Header */}
-        <div className="text-center mb-12 sm:mb-16 animate-fade-in">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4">
+        <div className="text-center mb-16 sm:mb-20 animate-fade-in">
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 sm:mb-6">
             <span className="bg-gradient-primary bg-clip-text text-transparent">
               Meet the IndiTwin Team
             </span>
           </h2>
-          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto px-4">
+          <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto px-4">
             Experts in traffic engineering, AI, and urban planning working together to revolutionize city mobility
           </p>
         </div>
 
         {/* Team Grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 lg:gap-12">
           {teamMembers.map((member, index) => (
             <Card
               key={index}
-              className="p-4 sm:p-6 md:p-8 bg-gradient-card border-border hover:border-primary/40 transition-all hover:shadow-glow-primary hover:-translate-y-2 duration-300 group animate-slide-up"
+              className="p-8 sm:p-10 md:p-12 bg-gradient-card border-2 border-border hover:border-primary/50 transition-all hover:shadow-glow-primary hover:-translate-y-3 duration-300 group animate-slide-up"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-6">
-                <div className="relative mx-auto sm:mx-0">
-                  <Avatar className="w-16 h-16 sm:w-20 sm:h-20 border-2 border-primary/20 group-hover:border-primary/40 transition-colors">
-                    <AvatarFallback className={member.color}>
-                      {member.initials}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="absolute -bottom-2 -right-2 p-1.5 sm:p-2 rounded-full bg-background border border-border group-hover:border-primary/40 transition-colors">
-                    <member.icon className="w-3 h-3 sm:w-4 sm:h-4 text-primary" />
-                  </div>
-                </div>
+              <div className="flex flex-col items-center text-center gap-6">
+                <Avatar className="w-28 h-28 sm:w-32 sm:h-32 md:w-36 md:h-36 border-4 border-primary/20 group-hover:border-primary/50 transition-colors shadow-lg">
+                  {member.image && <AvatarImage src={member.image} alt={member.name} className="object-cover" />}
+                  <AvatarFallback className={`${member.color} text-3xl sm:text-4xl font-bold`}>
+                    {member.initials}
+                  </AvatarFallback>
+                </Avatar>
 
-                <div className="flex-1 text-center sm:text-left">
-                  <h3 className="text-lg sm:text-xl font-bold mb-1 group-hover:text-primary transition-colors">
+                <div className="space-y-2">
+                  <h3 className="text-2xl sm:text-3xl font-bold group-hover:text-primary transition-colors">
                     {member.name}
                   </h3>
-                  <p className="text-xs sm:text-sm text-primary mb-2 sm:mb-3">{member.role}</p>
-                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                    {member.description}
-                  </p>
+                  <p className="text-base sm:text-lg text-primary font-medium">{member.role}</p>
                 </div>
               </div>
             </Card>
