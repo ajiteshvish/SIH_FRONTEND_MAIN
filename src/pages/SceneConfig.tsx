@@ -13,7 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Navbar } from "@/components/Navbar";
-import { FolderOpen, Layers, Building2, Wrench, FileText, Sparkles, BookOpen } from "lucide-react";
+import { FolderOpen, Layers, Building2, Wrench, FileText, Sparkles, BookOpen, MapPin } from "lucide-react";
 
 // Scene configuration data structure
 const sceneData = {
@@ -263,24 +263,40 @@ const sceneData = {
 
 export const SceneConfig = () => {
   const navigate = useNavigate();
+  const [simulationType, setSimulationType] = useState("");
   const [projectPath, setProjectPath] = useState("");
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongitude] = useState("");
+  const [extent, setExtent] = useState("");
   const [selectedItems, setSelectedItems] = useState<Record<string, string>>({});
   const [sceneDescription, setSceneDescription] = useState("");
   const [guidelinesAccepted, setGuidelinesAccepted] = useState(false);
 
   const handleSubmit = () => {
-    if (!projectPath.trim() || !sceneDescription.trim() || !guidelinesAccepted) {
+    if (!simulationType || !projectPath.trim() || !sceneDescription.trim() || !guidelinesAccepted) {
       return;
     }
 
     // Build a comprehensive message with all selected data (no markdown)
     let fullMessage = "";
 
+    // Add simulation type (required)
+    fullMessage += `Simulation Type: ${simulationType}\n\n`;
+
     // Add project path (required)
     fullMessage += `RoadRunner Project Path: ${projectPath}\n\n`;
 
-    // Add selected scene elements
-    const selectedCategories = Object.entries(selectedItems).filter(([_, value]) => value);
+    // Add map import data if provided
+    if (latitude.trim() || longitude.trim() || extent.trim()) {
+      fullMessage += "Import Map Data:\n";
+      if (latitude.trim()) fullMessage += `Latitude: ${latitude}\n`;
+      if (longitude.trim()) fullMessage += `Longitude: ${longitude}\n`;
+      if (extent.trim()) fullMessage += `Extent: ${extent}\n`;
+      fullMessage += "\n";
+    }
+
+    // Add selected scene elements (exclude "None" selections)
+    const selectedCategories = Object.entries(selectedItems).filter(([_, value]) => value && value !== "None");
     if (selectedCategories.length > 0) {
       fullMessage += "Selected Scene Elements:\n";
       selectedCategories.forEach(([category, item]) => {
@@ -403,8 +419,42 @@ export const SceneConfig = () => {
               </div>
             </div>
 
-            {/* Project Path Section - After Guidelines */}
+            {/* Simulation Type Section - After Guidelines */}
             <div className="bg-gradient-to-r from-primary/10 via-primary/5 to-transparent p-8 border-b border-border/50">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-primary flex items-center justify-center flex-shrink-0 shadow-glow-primary">
+                  <Layers className="w-6 h-6 text-primary-foreground" />
+                </div>
+                <div className="flex-1 space-y-3">
+                  <div>
+                    <Label htmlFor="simulationType" className="text-lg font-bold text-foreground">
+                      Simulation Type <span className="text-destructive">*</span>
+                    </Label>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      Choose the type of traffic simulation you want to create (required)
+                    </p>
+                  </div>
+                  <Select
+                    value={simulationType}
+                    onValueChange={setSimulationType}
+                  >
+                    <SelectTrigger 
+                      id="simulationType" 
+                      className="w-full h-12 text-base bg-background/80 border-border/50 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                    >
+                      <SelectValue placeholder="Select simulation type..." />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Indian">Indian</SelectItem>
+                      <SelectItem value="Basic">Basic</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </div>
+
+            {/* Project Path Section */}
+            <div className="bg-gradient-to-r from-muted/20 via-muted/10 to-transparent p-8 border-b border-border/50">
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 rounded-xl bg-gradient-primary flex items-center justify-center flex-shrink-0 shadow-glow-primary">
                   <FolderOpen className="w-6 h-6 text-primary-foreground" />
@@ -426,6 +476,76 @@ export const SceneConfig = () => {
                     required
                     className="w-full h-12 text-base bg-background/80 border-border/50 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                   />
+                </div>
+              </div>
+            </div>
+
+            {/* Import Your Map Section */}
+            <div className="bg-gradient-to-r from-primary/5 via-primary/3 to-transparent p-8 border-b border-border/50">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-xl bg-gradient-primary flex items-center justify-center flex-shrink-0 shadow-glow-primary">
+                  <MapPin className="w-6 h-6 text-primary-foreground" />
+                </div>
+                <div className="flex-1 space-y-4">
+                  <div>
+                    <Label className="text-lg font-bold text-foreground">
+                      Import Your Map
+                    </Label>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      Provide geographic coordinates to import a real-world map (optional)
+                    </p>
+                  </div>
+                  
+                  <div className="grid md:grid-cols-3 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="latitude" className="text-sm font-medium text-foreground">
+                        Latitude
+                      </Label>
+                      <Input
+                        id="latitude"
+                        type="number"
+                        step="any"
+                        value={latitude}
+                        onChange={(e) => setLatitude(e.target.value)}
+                        placeholder="e.g., 28.6139"
+                        className="w-full h-11 text-base bg-background/80 border-border/50 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="longitude" className="text-sm font-medium text-foreground">
+                        Longitude
+                      </Label>
+                      <Input
+                        id="longitude"
+                        type="number"
+                        step="any"
+                        value={longitude}
+                        onChange={(e) => setLongitude(e.target.value)}
+                        placeholder="e.g., 77.2090"
+                        className="w-full h-11 text-base bg-background/80 border-border/50 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                      />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <Label htmlFor="extent" className="text-sm font-medium text-foreground">
+                        Extent (meters)
+                      </Label>
+                      <Input
+                        id="extent"
+                        type="number"
+                        step="any"
+                        value={extent}
+                        onChange={(e) => setExtent(e.target.value)}
+                        placeholder="e.g., 500"
+                        className="w-full h-11 text-base bg-background/80 border-border/50 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                      />
+                    </div>
+                  </div>
+                  
+                  <p className="text-xs text-muted-foreground italic">
+                    💡 Tip: Use Google Maps to find coordinates. Right-click on a location and select the coordinates to copy them.
+                  </p>
                 </div>
               </div>
             </div>
@@ -460,6 +580,7 @@ export const SceneConfig = () => {
                           <SelectValue placeholder={`Select ${category.toLowerCase()}...`} />
                         </SelectTrigger>
                         <SelectContent>
+                          <SelectItem value="None">None</SelectItem>
                           {items.map((item) => (
                             <SelectItem key={item} value={item}>
                               {item}
@@ -499,7 +620,7 @@ export const SceneConfig = () => {
               <div className="flex justify-center mt-8">
                 <Button
                   onClick={handleSubmit}
-                  disabled={!projectPath.trim() || !sceneDescription.trim() || !guidelinesAccepted}
+                  disabled={!simulationType || !projectPath.trim() || !sceneDescription.trim() || !guidelinesAccepted}
                   size="lg"
                   className="bg-gradient-primary hover:shadow-glow-primary transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 px-12 py-6 text-lg font-semibold rounded-xl"
                 >
