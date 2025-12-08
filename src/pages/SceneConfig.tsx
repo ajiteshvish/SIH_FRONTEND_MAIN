@@ -16,7 +16,7 @@ export const SceneConfig = () => {
   const [guidelinesAccepted, setGuidelinesAccepted] = useState(false);
 
   const handleSubmit = () => {
-    if (!projectPath.trim() || !extent.trim() || !sceneDescription.trim() || !guidelinesAccepted) {
+    if (!projectPath.trim() || !sceneDescription.trim() || !guidelinesAccepted) {
       return;
     }
 
@@ -26,9 +26,11 @@ export const SceneConfig = () => {
     // Add project path (required)
     fullMessage += `RoadRunner Project Path: ${projectPath}\n\n`;
 
-    // Add map import data (required)
-    fullMessage += "Import Map Data:\n";
-    fullMessage += `Extent: ${extent} meters\n\n`;
+    // Add map import data (commented out for now)
+    // if (extent.trim()) {
+    //   fullMessage += "Import Map Data:\n";
+    //   fullMessage += `Extent: ${extent} meters\n\n`;
+    // }
 
     // Add scene description
     fullMessage += `Scene Description:\n${sceneDescription}`;
@@ -71,7 +73,7 @@ export const SceneConfig = () => {
                   </div>
                 </div>
 
-                <div className="space-y-4 text-sm text-foreground bg-background/50 p-5 rounded-lg border border-border/30 max-h-96 overflow-y-auto">
+                <div className="space-y-4 text-sm text-foreground bg-background/50 p-5 rounded-lg border border-border/30 max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-muted-foreground/30 scrollbar-track-transparent hover:scrollbar-thumb-muted-foreground/50">
                   <div>
                     <h4 className="font-semibold text-base mb-2">1. Check Licence</h4>
                     <p className="text-muted-foreground">When RoadRunner starts, it first checks whether you have a valid licence. The system will show Yes/No indicating whether the licence is available.</p>
@@ -164,8 +166,8 @@ export const SceneConfig = () => {
               </div>
             </div>
 
-            {/* Import Your Map Section */}
-            <div className="bg-gradient-to-r from-primary/5 via-primary/3 to-transparent p-8 border-b border-border/50">
+            {/* Import Your Map Section - COMMENTED OUT FOR NOW */}
+            {/* <div className="bg-gradient-to-r from-primary/5 via-primary/3 to-transparent p-8 border-b border-border/50">
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 rounded-xl bg-gradient-primary flex items-center justify-center flex-shrink-0 shadow-glow-primary">
                   <MapPin className="w-6 h-6 text-primary-foreground" />
@@ -192,7 +194,7 @@ export const SceneConfig = () => {
                   />
                 </div>
               </div>
-            </div>
+            </div> */}
 
             {/* Scene Description */}
             <div className="p-8">
@@ -223,7 +225,7 @@ export const SceneConfig = () => {
               <div className="flex justify-center mt-8">
                 <Button
                   onClick={handleSubmit}
-                  disabled={!projectPath.trim() || !extent.trim() || !sceneDescription.trim() || !guidelinesAccepted}
+                  disabled={!projectPath.trim() || !sceneDescription.trim() || !guidelinesAccepted}
                   size="lg"
                   className="bg-gradient-primary hover:shadow-glow-primary transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 px-12 py-6 text-lg font-semibold rounded-xl"
                 >
