@@ -1,8 +1,20 @@
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Bot, Send } from "lucide-react";
+import { Bot, Send, Loader2 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
+
+const loadingMessages = [
+  "Creating scene...",
+  "Simulating environment...",
+  "Building road network...",
+  "Placing traffic signals...",
+  "Adding vehicles...",
+  "Configuring traffic flow...",
+  "Optimizing simulation...",
+  "Analyzing traffic patterns...",
+  "Finalizing scene setup...",
+];
 
 type ChatMessage = {
   role: "user" | "assistant";
@@ -19,6 +31,7 @@ export const ChatInterface = () => {
     },
   ]);
   const [loading, setLoading] = useState(false);
+  const [loadingMessageIndex, setLoadingMessageIndex] = useState(0);
 
   // 🧠 Ek hi session ke liye stable threadId – isse LangGraph memory handle karega
   const [threadId] = useState(
@@ -26,6 +39,18 @@ export const ChatInterface = () => {
   );
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Rotate loading messages
+  useEffect(() => {
+    if (loading) {
+      const interval = setInterval(() => {
+        setLoadingMessageIndex((prev) => (prev + 1) % loadingMessages.length);
+      }, 2000); // Change message every 2 seconds
+      return () => clearInterval(interval);
+    } else {
+      setLoadingMessageIndex(0);
+    }
+  }, [loading]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -160,11 +185,21 @@ export const ChatInterface = () => {
 
           {loading && (
             <div className="flex justify-start gap-4 animate-slide-up">
-              <div className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center flex-shrink-0 shadow-glow-primary">
+              <div className="w-8 h-8 rounded-full bg-gradient-primary flex items-center justify-center flex-shrink-0 shadow-glow-primary animate-pulse">
                 <Bot className="w-5 h-5 text-primary-foreground" />
               </div>
-              <div className="max-w-[80%] rounded-2xl px-5 py-3 bg-muted text-foreground">
-                <p className="text-[15px] leading-relaxed">Thinking…</p>
+              <div className="max-w-[80%] rounded-2xl px-5 py-3 bg-gradient-to-r from-muted to-muted/50 text-foreground border border-primary/20">
+                <div className="flex items-center gap-3">
+                  <div className="relative w-8 h-8">
+                    <div className="absolute inset-0 rounded-full bg-primary/20 animate-ping"></div>
+                    <div className="relative flex items-center justify-center w-8 h-8 rounded-full bg-gradient-primary">
+                      <Loader2 className="w-4 h-4 text-primary-foreground animate-spin" />
+                    </div>
+                  </div>
+                  <p className="text-[15px] leading-relaxed font-medium bg-gradient-primary bg-clip-text text-transparent animate-pulse">
+                    {loadingMessages[loadingMessageIndex]}
+                  </p>
+                </div>
               </div>
             </div>
           )}
